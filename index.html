@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Who Is Actually Hiring</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,560&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: one reading column, a field-note header, tables in their own scroll boxes */
+:root{
+  --bg:#f5f7f7; --paper:#ffffff; --ink:#15211f; --muted:#5b6866; --rule:#d6dedc;
+  --accent:#0f6e64; --wrong:#a3412a; --wrong-bg:#f8ebe6; --right-bg:#e6f2ef;
+  --display:"Fraunces",Georgia,serif; --body:"IBM Plex Sans",system-ui,sans-serif; --mono:"IBM Plex Mono",ui-monospace,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0f1514; --paper:#161e1d; --ink:#e4ecea; --muted:#9aaba8; --rule:#2a3634;
+  --accent:#5cc4b5; --wrong:#f08f72; --wrong-bg:#2c1b16; --right-bg:#13261f; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0f1514; --paper:#161e1d; --ink:#e4ecea; --muted:#9aaba8; --rule:#2a3634;
+  --accent:#5cc4b5; --wrong:#f08f72; --wrong-bg:#2c1b16; --right-bg:#13261f; color-scheme:dark}
+body{background:var(--bg);color:var(--ink);font:16px/1.6 var(--body);padding-inline:16px;padding-block:40px 64px}
+main{max-width:720px;margin:0 auto;display:grid;gap:36px}
+header{display:grid;gap:10px}
+.eyebrow{font:500 12px/1.4 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+h1{font:560 clamp(30px,6vw,44px)/1.1 var(--display);margin:0;text-wrap:balance}
+h2{font:560 24px/1.25 var(--display);margin:0 0 4px;text-wrap:balance}
+p{margin:0;max-width:65ch}
+section{display:grid;gap:14px}
+.lede{font-size:18px;color:var(--ink)}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px}
+.stat{background:var(--paper);border:1px solid var(--rule);border-radius:6px;padding:14px 16px;display:grid;gap:4px}
+.stat b{font:500 28px/1 var(--mono);color:var(--accent);font-variant-numeric:tabular-nums}
+.stat span{font-size:14px;color:var(--muted)}
+.tbl{overflow-x:auto;border:1px solid var(--rule);border-radius:6px;background:var(--paper)}
+table{border-collapse:collapse;width:100%;font-size:14px;min-width:560px}
+th,td{text-align:left;padding:8px 12px;border-bottom:1px solid var(--rule);vertical-align:top}
+th{font:500 12px var(--mono);letter-spacing:.05em;text-transform:uppercase;color:var(--muted)}
+tr:last-child td{border-bottom:0}
+td.n{font-family:var(--mono);font-variant-numeric:tabular-nums;text-align:right}
+code{font:14px var(--mono);background:var(--right-bg);padding:1px 5px;border-radius:3px}
+.bad{color:var(--wrong);font-weight:500}
+.note{background:var(--wrong-bg);border-left:3px solid var(--wrong);padding:14px 16px;border-radius:0 6px 6px 0;display:grid;gap:8px}
+ul{margin:0;padding-left:20px;display:grid;gap:6px;max-width:65ch}
+pre{margin:0;background:var(--paper);border:1px solid var(--rule);border-radius:6px;padding:12px 14px;overflow-x:auto;font:14px/1.5 var(--mono)}
+footer{border-top:1px solid var(--rule);padding-top:20px;display:grid;gap:8px;color:var(--muted);font-size:14px}
+a{color:var(--accent)} a:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+</style>
+
+<main>
+<header>
+  <div class="eyebrow">Field note · snapshot 14 Oct 2026, 14:59 UTC · Ashby, Greenhouse, Lever public APIs</div>
+  <h1>Who is actually hiring?</h1>
+  <p class="lede">Joining a funding round to a company's job board looks like a lookup. I measured it on one week of real funding news and 170 job boards I maintain by hand. A name gets you the wrong company about a quarter of the time.</p>
+</header>
+
+<div class="stats">
+  <div class="stat"><b>13 / 48</b><span>funded companies a name-based resolver tied to someone else's board</span></div>
+  <div class="stat"><b>263</b><span>open postings credited to the wrong company</span></div>
+  <div class="stat"><b>13 → 2</b><span>wrong matches after two rules, at a cost of 3 correct ones</span></div>
+</div>
+
+<section>
+  <h2>1. Funding news to job board</h2>
+  <p>My funding scout reads Google News and TechCrunch and pulled 141 company names from headlines between 5 and 13 October. The resolver a reasonable person writes first tries the name squashed (<code>flowengineering</code>), hyphenated, then its first word, on Ashby, then Greenhouse, then Lever, and takes the first board with open jobs. I labeled every match by reading the board's own "About us" against the headline and, where they disagreed, the company's press.</p>
+  <p>It attached a board to 48 names: 29 right, 13 wrong, 6 consistent with the sector but unconfirmed. The wrong ones:</p>
+  <div class="tbl"><table>
+    <thead><tr><th>Name in the news</th><th>Board it landed on</th><th class="n">Jobs</th><th>What that board is</th></tr></thead>
+    <tbody>
+      <tr><td>Parallel Systems ($100M Series C, freight rail)</td><td><code>ashby:parallel</code></td><td class="n">26</td><td class="bad">Parallel Web Systems. The rail company is <code>greenhouse:parallel</code></td></tr>
+      <tr><td>Crypto prop trading startup Vest</td><td><code>lever:crypto</code></td><td class="n">87</td><td class="bad">Headline parsing kept the word "Crypto"</td></tr>
+      <tr><td>Plaud Alum (founded Ambi)</td><td><code>ashby:plaud</code></td><td class="n">52</td><td class="bad">Plaud itself</td></tr>
+      <tr><td>Vinci Pharmaceuticals</td><td><code>ashby:vinci</code></td><td class="n">35</td><td class="bad">Vinci, hardware physics simulation ($250M Series B the same week)</td></tr>
+      <tr><td>Dutch cybersecurity firm Hadrian</td><td><code>lever:dutch</code></td><td class="n">13</td><td class="bad">Dutch, veterinary care</td></tr>
+      <tr><td>Sequoia-backed Catalyst</td><td><code>ashby:sequoia</code></td><td class="n">8</td><td class="bad">Sequoia, a benefits consultancy</td></tr>
+      <tr><td>Owkin alum</td><td><code>ashby:owkin</code></td><td class="n">5</td><td class="bad">Owkin itself</td></tr>
+      <tr><td>Noah ($38M, stablecoin payments)</td><td><code>greenhouse:noah</code></td><td class="n">4</td><td class="bad">North Oatlands Animal Hospital</td></tr>
+      <tr><td>Ultra ($50M Series A, packing robots)</td><td><code>ashby:ultra</code></td><td class="n">3</td><td class="bad">Nicotine-free pouches</td></tr>
+      <tr><td>Autonomous freight rail startup Parallel</td><td><code>lever:autonomous</code></td><td class="n">2</td><td class="bad">Autonomous, office furniture</td></tr>
+      <tr><td>Golf media startup Pro Shop</td><td><code>greenhouse:golf</code></td><td class="n">1</td><td class="bad">GOLF.com, same industry, different company</td></tr>
+      <tr><td>Taiwan's KONST</td><td><code>greenhouse:taiwan</code></td><td class="n">1</td><td class="bad">Sony Interactive, Taiwan</td></tr>
+      <tr><td>Parallel (same rail round, third headline)</td><td><code>ashby:parallel</code></td><td class="n">26</td><td class="bad">Parallel Web Systems again</td></tr>
+    </tbody>
+  </table></div>
+  <p>Two rules move this a lot. Never fall back to the first word of a multi-word name, and abstain when a slug is live on two ATSs. Attached drops from 48 to 34, wrong from 13 to 2, and 3 right matches are lost (Hone abstains; Gardens Interactive and Reach Security live at their first word). Precision on labeled matches goes from 69% to 93%.</p>
+  <p>The two that survive, Noah and Ultra, are single-word names whose slug belongs to someone else. No rule on the name can catch them. That needs a second key. The cheapest one I tried is the round amount quoted inside the job posts: it appears for 5 of the 29 right matches and 0 of the 13 wrong ones. That is useful as a confirmation and useless as a gate.</p>
+  <p>Order also decides the answer. <code>hone</code> is live on Ashby (the Hone that raised) and on Greenhouse (a people-development platform). Check Ashby first and you are right; check Greenhouse first and you are wrong, with the same code.</p>
+  <p>The news side has its own identity problem: the same week produced 11 companies under two or three headline names (Parallel three ways, Valon three ways, Catalyst three ways). Sources also disagree on the facts. Fortune and the company called Catalyst's $30M a seed; two aggregators called it a Series A.</p>
+</section>
+
+<section>
+  <h2>2. One slug, several companies</h2>
+  <p>For the 172 boards I check by hand (slug and ATS confirmed by opening the board), I probed the same slug on the other two systems. 14 answered. Six were empty Lever accounts left behind after a move. The rest:</p>
+  <div class="tbl"><table>
+    <thead><tr><th>Slug</th><th>The company I track</th><th>Who answers on the other ATS</th><th class="n">Jobs</th></tr></thead>
+    <tbody>
+      <tr><td><code>lovable</code></td><td>Lovable, AI app builder (Ashby)</td><td class="bad">Lovable, an Italian lingerie brand (Greenhouse)</td><td class="n">61</td></tr>
+      <tr><td><code>hazel</code></td><td>Hazel, AI for consumer brands</td><td class="bad">Hazel Health, school mental health</td><td class="n">20</td></tr>
+      <tr><td><code>handshake</code></td><td>Handshake</td><td class="bad">Pioneer Consulting</td><td class="n">9</td></tr>
+      <tr><td><code>profound</code></td><td>Profound, AI search</td><td class="bad">ProFound Therapeutics</td><td class="n">2</td></tr>
+      <tr><td><code>socket</code></td><td>Socket, open-source security</td><td class="bad">Socket Labs, blockchain</td><td class="n">1</td></tr>
+      <tr><td><code>mesh</code></td><td>Mesh, crypto payments</td><td>Mesh, the same 17 jobs posted twice</td><td class="n">17</td></tr>
+      <tr><td><code>orb</code></td><td>Orb, billing</td><td>Orb: 1 live job and 3 "Sample Job" posts from Feb 2023</td><td class="n">4</td></tr>
+      <tr><td><code>vercel</code></td><td>Vercel (Ashby, empty)</td><td>Vercel, all 89 jobs (Greenhouse)</td><td class="n">89</td></tr>
+    </tbody>
+  </table></div>
+  <p>Five slugs, 93 postings, belong to a different company. A board's existence proves nothing about whose board it is, and the "About us" paragraph is the only identity check these APIs give you for free.</p>
+</section>
+
+<section>
+  <h2>3. A posting is not a hire</h2>
+  <p>The same 162 companies have 7,790 open postings. Median age is 54 days; 31.5% are older than 90 days, 15.0% older than 180, 4.2% older than a year.</p>
+  <ul>
+    <li>14.4% of postings repeat a title the same company already has open. Perplexity lists "Member of Technical Staff" 44 times.</li>
+    <li>27.2% of Ashby postings carry extra cities on one post, while other companies clone the post per city. Postings per distinct title runs from 1.00 to 2.57 among companies with 30+ postings, so raw counts do not compare across companies.</li>
+    <li>For a "hiring fastest" list, the dedupe matters less than I expected: the top 10 by new postings in 30 days and by new distinct titles share 9 companies. Duplicates distort size more than rank.</li>
+  </ul>
+</section>
+
+<section class="note">
+  <h2>The part I got wrong</h2>
+  <p>This started because my own job-search scout was wrong. It watched Vercel's Ashby board, which answers with zero jobs, while Vercel had 89 open on Greenhouse. My dead-board check only looked for a 404, and an empty board is not a 404. Eight of my 170 boards return zero jobs today; only Vercel had moved. The failure that hurt was a silent empty answer, which is the same shape as the wrong-company matches above.</p>
+</section>
+
+<section>
+  <h2>What I would build next</h2>
+  <ul>
+    <li><b>Resolution as a scored decision with a reject option.</b> Report precision and coverage on a labeled set, and pick the threshold on the cost of a wrong alert versus a missed one.</li>
+    <li><b>A labeled evaluation set that grows from production.</b> Every disagreement between sources becomes a labeling task; this note's 48 labels are the seed.</li>
+    <li><b>Second keys ranked by how often they exist</b>: the website in the posting, the apply domain, the amount quoted in the post, sector overlap with the headline.</li>
+    <li><b>Freshness and duplication as data products</b>: age bands, repeat titles, and multi-board companies exposed on the record, so a customer's "is hiring" alert says what it is counting.</li>
+  </ul>
+</section>
+
+<section>
+  <h2>Method and limits</h2>
+  <p>One snapshot. Labels are mine, made by reading each board against the headline and press; six matches are marked consistent but unconfirmed. The funding set is one week and skews to AI and to companies with English-language coverage. Ashby's publish date may reset on repost, so the age figures are a floor on staleness, not a measurement of it.</p>
+  <pre>python3 fetch.py     # snapshot 1,251 board probes, about a minute
+python3 analyze.py   # every number above, stdlib only, 0.2 seconds</pre>
+</section>
+
+<footer>
+  <p>Syed Ahmed Basharat Ali, data scientist, New York. At Geidea, Saudi Arabia's largest payments processor (40,000 merchants), I segmented the merchant base and helped bring churn from 35% to about 10%. Through my own consulting practice I was the CEO's data person at Rime, an edge-AI camera company, where I traced an 80% upstream data loss across a 150-device fleet and moved a multi-tenant warehouse of 50+ client schemas onto dbt.</p>
+  <p>basharat.net · github.com/sa-basharat-ali · sabasharat.ali@gmail.com</p>
+</footer>
+</main>
