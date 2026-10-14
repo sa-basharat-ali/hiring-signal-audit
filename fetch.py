@@ -108,7 +108,7 @@ def slug_guesses(name):
 
 
 def funded():
-    rows = list(csv.DictReader(open(os.path.join(HERE, '..', '..', 'outreach', 'leads', 'funded.csv'))))
+    rows = list(csv.DictReader(open(os.path.join(HERE, 'funded.csv'))))
     seen, out = set(), []
     for r in rows:
         k = r['company'].strip().lower()
